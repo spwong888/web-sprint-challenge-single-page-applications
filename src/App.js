@@ -1,7 +1,6 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import PizzaForm from './PizzaForm';
-
 
 function HomePage() {
   return (
@@ -15,10 +14,12 @@ function HomePage() {
 export default function App() {
   return (
     <div>
-      <Route exact path="/" component={HomePage} />
-      <Route path="/pizza" component={PizzaForm} />
-      <Route path="/pizza/:id" component={PizzaForm} />
-      {/* Other routes go here */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pizza" element={<PizzaForm />} />
+        <Route path="/pizza/:id" element={<PizzaForm />} />
+        {/* Other routes go here */}
+      </Routes>
     </div>
   );
 }
