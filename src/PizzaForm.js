@@ -13,7 +13,7 @@ function PizzaForm() {
   
     // Validate the name
     if (newName.length < 2) {
-      setNameError('Name must be at least 2 characters');
+      setNameError('name must be at least 2 characters');
     } else {
       setNameError('');
     }
@@ -22,7 +22,7 @@ function PizzaForm() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (name.length < 2) {
-      alert('Name must be at least 2 characters');
+      alert('name must be at least 2 characters');
       return;
     }
     if (!size) {
@@ -59,7 +59,7 @@ function PizzaForm() {
           onChange={(e) => handleNameChange(e.target.value)}
           onBlur={() => {
             if (name.length < 2) {
-              setNameError("Name must be at least 2 characters");
+              setNameError("name must be at least 2 characters");
             } else {
               setNameError("");
             }
