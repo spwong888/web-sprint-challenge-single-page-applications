@@ -2,9 +2,22 @@ import React, { useState } from 'react';
 
 function PizzaForm() {
   const [name, setName] = useState('');
+  const [nameError, setNameError] = useState(''); 
   const [size, setSize] = useState('');
   const [toppings, setToppings] = useState([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
+
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    setName(newName);
+  
+    // Validate the name
+    if (newName.length < 2) {
+      setNameError('Name must be at least 2 characters');
+    } else {
+      setNameError('');
+    }
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -34,13 +47,21 @@ function PizzaForm() {
     <div>
       <form id="pizza-form" onSubmit={handleFormSubmit}>
         <div>
-          <label htmlFor="name-input">Name:</label>
-          <input
-            type="text"
-            id="name-input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+        <label htmlFor="name-input">Name:</label>
+        <input
+          type="text"
+          id="name-input"
+          value={name}
+          onChange={(e) => handleNameChange(e.target.value)}
+          onBlur={() => {
+            if (name.length < 2) {
+              setNameError("Name must be at least 2 characters");
+            } else {
+              setNameError("");
+            }
+          }}
+        />
+        {nameError && <p className="error-message">{nameError}</p>}
         </div>
         <div>
           <label htmlFor="size-dropdown">Size:</label>
