@@ -25,6 +25,10 @@ function PizzaForm() {
       alert('Name must be at least 2 characters');
       return;
     }
+    if (!size) {
+        alert('Please select a size');
+        return;
+    }
     const formData = {
       name,
       size,
@@ -71,6 +75,9 @@ function PizzaForm() {
             onChange={(e) => setSize(e.target.value)}
           >
             <option value="">Select a size</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
             {/* Add options for pizza sizes here */}
           </select>
         </div>
