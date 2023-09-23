@@ -2,19 +2,27 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import PizzaForm from './PizzaForm';
 
-test('Form has validation for #name-input with error message "name must be at least 2 characters"', async () => {
+test('Fill out #pizza-form, submit #pizza-form with data to https://reqres.in/api/orders', async () => {
   const { getByLabelText, getByText } = render(<PizzaForm />);
 
+  // Fill out form fields with data
   const nameInput = getByLabelText('Name:');
-  fireEvent.change(nameInput, { target: { value: 'A' } }); // Input a name with less than 2 characters
+  const sizeDropdown = getByLabelText('Size:');
+  const pepperoniCheckbox = getByLabelText('Pepperoni');
+  // Fill out other form fields as needed
 
-  // Use a regular expression to match the error message text
-  const errorMessage = getByText(/name must be at least 2 characters/i);
+  fireEvent.change(nameInput, { target: { value: 'Tony Stark' } });
+  fireEvent.change(sizeDropdown, { target: { value: 'Large' } });
+  fireEvent.click(pepperoniCheckbox);
 
-  expect(errorMessage).toBeInTheDocument();
+  // Submit the form
+  const orderButton = getByText('Add to Order');
+  fireEvent.click(orderButton);
 
+  // Wait for the form submission to complete (you might need to adjust this)
   await waitFor(() => {
-    const updatedErrorMessage = getByText('name must be at least 2 characters');
-    expect(updatedErrorMessage).toBeInTheDocument();
+    // Check for success message or other post-submission behavior
+    const successMessage = getByText('Order submitted successfully');
+    expect(successMessage).toBeInTheDocument();
   });
 });
