@@ -6,6 +6,7 @@ function PizzaForm() {
   const [size, setSize] = useState('');
   const [toppings, setToppings] = useState([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Add a state to track form submission
 
   const handleNameChange = (e) => {
     const newName = e.target.value;
@@ -26,8 +27,8 @@ function PizzaForm() {
       return;
     }
     if (!size) {
-        alert('Please select a size');
-        return;
+      alert('Please select a size');
+      return;
     }
     const formData = {
       name,
@@ -35,8 +36,13 @@ function PizzaForm() {
       toppings,
       special: specialInstructions,
     };
-    console.log(formData);
-    // Submit the form data and handle the database record here
+    
+    // Simulate form submission (for testing purposes)
+    // In a real application, you would make an API call here
+    console.log('Form submitted with data:', formData);
+
+    // Update state to indicate form submission
+    setIsFormSubmitted(true);
   };
 
   const handleToppingChange = (topping, isChecked) => {
@@ -51,21 +57,21 @@ function PizzaForm() {
     <div>
       <form id="pizza-form" onSubmit={handleFormSubmit}>
         <div>
-        <label htmlFor="name-input">Name:</label>
-        <input
-          type="text"
-          id="name-input"
-          value={name}
-          onChange={(e) => handleNameChange(e.target.value)}
-          onBlur={() => {
-            if (name.length < 2) {
-              setNameError("name must be at least 2 characters");
-            } else {
-              setNameError("");
-            }
-          }}
-        />
-        {nameError && <p className="error-message">{nameError}</p>}
+          <label htmlFor="name-input">Name:</label>
+          <input
+            type="text"
+            id="name-input"
+            value={name}
+            onChange={(e) => handleNameChange(e)}
+            onBlur={() => {
+              if (name.length < 2) {
+                setNameError("name must be at least 2 characters");
+              } else {
+                setNameError("");
+              }
+            }}
+          />
+          {nameError && !isFormSubmitted && <p className="error-message">{nameError}</p>}
         </div>
         <div>
           <label htmlFor="size-dropdown">Size:</label>
@@ -78,51 +84,50 @@ function PizzaForm() {
             <option value="Small">Small</option>
             <option value="Medium">Medium</option>
             <option value="Large">Large</option>
-            {/* Add options for pizza sizes here */}
           </select>
         </div>
         <div>
           <label>Toppings:</label>
           <div id="toppings-checkbox-group">
             <label>
-                <input
+              <input
                 type="checkbox"
                 name="topping"
                 value="pepperoni"
                 checked={toppings.includes("pepperoni")}
                 onChange={(e) => handleToppingChange("pepperoni", e.target.checked)}
-                />
+              />
               Pepperoni
             </label>
             <label>
-                <input 
+              <input 
                 type="checkbox"
                 name="topping"
                 value="sausage"
                 checked={toppings.includes("sausage")}
                 onChange={(e) => handleToppingChange("sausage", e.target.checked)}
-                />
-                Sausage
+              />
+              Sausage
             </label>
             <label>
-                <input
+              <input
                 type="checkbox"
                 name="topping"
                 value="mushrooms"
                 checked={toppings.includes("mushrooms")}
                 onChange={(e) => handleToppingChange("mushrooms", e.target.checked)}
-                />
-                Mushrooms
+              />
+              Mushrooms
             </label>
             <label>
-                <input
+              <input
                 type="checkbox"
                 name="topping"
                 value="onions"
                 checked={toppings.includes("onions")}
                 onChange={(e) => handleToppingChange("onions", e.target.checked)}
-                />
-                Onions
+              />
+              Onions
             </label>
           </div>
         </div>
@@ -138,6 +143,7 @@ function PizzaForm() {
           Add to Order
         </button>
       </form>
+      {isFormSubmitted && <p className="success-message">Order submitted successfully</p>}
     </div>
   );
 }

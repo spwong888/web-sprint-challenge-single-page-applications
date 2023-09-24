@@ -3,26 +3,24 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import PizzaForm from './PizzaForm';
 
 test('Fill out #pizza-form, submit #pizza-form with data to https://reqres.in/api/orders', async () => {
-  const { getByLabelText, getByText } = render(<PizzaForm />);
+  const { getByLabelText, getByText, queryByText } = render(<PizzaForm />);
 
-  // Fill out form fields with data
   const nameInput = getByLabelText('Name:');
   const sizeDropdown = getByLabelText('Size:');
-  const pepperoniCheckbox = getByLabelText('Pepperoni');
-  // Fill out other form fields as needed
+  const pepperoniCheckbox = getByLabelText('pepperoni'); // Use the value attribute
+  const specialTextarea = getByTestId('special-text'); // Select by data-testid
+  const submitButton = getByText('Add to Order');
+  const successMessage = getByText('Order submitted successfully');
+  const errorMessage = queryByText('An error occurred'); // Use queryByText to check for absence
 
   fireEvent.change(nameInput, { target: { value: 'Tony Stark' } });
   fireEvent.change(sizeDropdown, { target: { value: 'Large' } });
   fireEvent.click(pepperoniCheckbox);
+  fireEvent.change(specialTextarea, { target: { value: 'Special instructions go here' } });
+  fireEvent.click(submitButton);
 
-  // Submit the form
-  const orderButton = getByText('Add to Order');
-  fireEvent.click(orderButton);
-
-  // Wait for the form submission to complete (you might need to adjust this)
   await waitFor(() => {
-    // Check for success message or other post-submission behavior
-    const successMessage = getByText('Order submitted successfully');
     expect(successMessage).toBeInTheDocument();
+    expect(errorMessage).not.toBeInTheDocument(); // Ensure error message is not present
   });
 });
